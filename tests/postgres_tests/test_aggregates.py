@@ -117,12 +117,12 @@ class TestGeneralAggregate(PostgreSQLTestCase):
         values = AggregateTestModel.objects.aggregate(stringagg=StringAgg('char_field', delimiter=';'))
         self.assertEqual(values, {'stringagg': ''})
 
-    @skipUnlessDBFeature('has_jsonb_datatype')
+    @skipUnlessDBFeature('has_jsonb_agg')
     def test_json_agg(self):
         values = AggregateTestModel.objects.aggregate(jsonagg=JsonAgg('char_field'))
         self.assertEqual(values, {'jsonagg': ['Foo1', 'Foo2', 'Foo3', 'Foo4']})
 
-    @skipUnlessDBFeature('has_jsonb_datatype')
+    @skipUnlessDBFeature('has_jsonb_agg')
     def test_json_agg_empty(self):
         values = AggregateTestModel.objects.none().aggregate(jsonagg=JsonAgg('integer_field'))
         self.assertEqual(values, json.loads('{"jsonagg": []}'))
